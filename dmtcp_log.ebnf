@@ -1,0 +1,50 @@
+@@grammar :: DmtcpLogLanguage
+
+start =  { msg }+ $ ;
+
+msg =
+     | dmtcp_msg:'[' dpid:pid ']' dmtype:msg_type 'at' dfname:fname dfext:fext ':' dlnum:lnum 'in' dfnc:fnc '; REASON=' drea:reason dargs:{ args }*
+     | mtcp_msg:'[' mpid:pid ']' mfname:fname mfext:fext ':' mlnum:lnum 'in' mfnc:fnc '; REASON=' mrea:reason margs:{ args }*
+     ;
+
+pid = /\d+/ ;
+
+msg_type =
+    | 'TRACE'
+    | 'WARNING'
+    | 'NOTE'
+    | 'ERROR'
+    ;
+
+fname = /[a-zA-Z_]+/ ;
+
+fext =
+    | '.cpp'
+    | '.c'
+    | '.h'
+    ;
+
+lnum = /\d+/ ;
+
+fnc = /[_a-zA-Z][_a-zA-Z0-9]*/ ;
+
+reason = 
+        | /\'.+\'$/ 
+        | /.+$/ 
+        ;
+
+args = 
+       | dl:dashed_line
+       | avp:arg_val_pair
+       | cd:connection_description
+       ;
+
+dashed_line = '==================================================' ;
+
+connection_description = /.*->.*/ ;
+
+arg_val_pair = avpa:arg '=' avpv:value ;
+
+arg = /(?!\[\d+\])[^=]*/ ;
+
+value = /.*$/ ;
