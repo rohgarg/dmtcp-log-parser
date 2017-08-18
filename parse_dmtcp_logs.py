@@ -27,7 +27,7 @@ def main():
   parser.add_argument('-f', '--filter-functions', nargs='+',
                       help='List of function names to filter', required=False)
   parser.add_argument('-m', '--filter-logtypes', nargs='+', choices=logtypes,
-                      help='List of function names to filter', required=False)
+                      help='List of log message types to filter', required=False)
   args = parser.parse_args()
 
   text = open(args.log_filename, 'r').read()
